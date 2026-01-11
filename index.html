@@ -97,7 +97,7 @@
 
         .btn-secondary {
             background: transparent;
-            color: #fff; /* 背景が暗いため常に白 */
+            color: #fff;
             border: 1px solid rgba(255,255,255,0.3);
             margin-left: 15px;
         }
@@ -159,7 +159,7 @@
             margin-left: 20px;
         }
 
-        /* --- Fullscreen Video Hero --- */
+        /* --- Hero Section --- */
         .hero {
             position: relative;
             height: 100vh;
@@ -172,28 +172,25 @@
             color: #fff;
         }
 
-        .hero-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-        }
-
-        /* 画像を背景にしたい場合の予備クラス */
-        .hero-img {
+        /* Hero Background container */
+        .hero-bg-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            object-fit: cover;
+        }
+
+        /* Video/Image common style */
+        .hero-video, .hero-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover; /* 画面いっぱいに隙間なく表示 */
         }
 
         .hero-overlay {
@@ -202,7 +199,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7));
             z-index: -1;
         }
 
@@ -227,7 +224,6 @@
             text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        /* 下へのスクロールを促すアイコン */
         .scroll-down {
             position: absolute;
             bottom: 30px;
@@ -473,17 +469,23 @@
         </div>
     </nav>
 
-    <!-- 1. ヒーローセクション (フルスクリーン動画背景) -->
+    <!-- 1. ヒーローセクション -->
     <header class="hero">
-        <!-- 動画を使用する場合 -->
-        <!-- muted autoplay loop playsinline はブラウザで自動再生させるために必須の設定です -->
-       <!-- <video src="my-reel.mp4" class="hero-video" muted autoplay loop playsinline poster="hero-poster.jpg"></video> -->
-        
-        <!-- 画像を使用したい場合は上記videoを削除して以下を有効化してください -->
-        <img src="hero-bg.jpg" alt="Hero Background" class="hero-img"> 
-        
+        <div class="hero-bg-container">
+            <!-- 
+                動画背景を使いたい場合は以下の <video> のコメントアウトを解除し、
+                その下の <img> をコメントアウトしてください。
+            -->
+            <!-- <video src="my-reel.mp4" class="hero-video" muted autoplay loop playsinline poster="hero-poster.jpg"></video> -->
+            
+            <!-- 
+                画像背景（<img>タグ形式）
+                src="..." の部分をご自身の画像ファイル名（例: hero-image.jpg）に変更してください。
+            -->
+            <img src="hero-bg.jpg" alt="Hero Image" class="hero-img">
+        </div>
+
         <div class="hero-overlay"></div>
-        
         <div class="container">
             <div class="hero-content">
                 <h1 class="reveal">AI×戦略。<br><span class="accent-text">低コスト・高クオリティ</span>で、<br>ブランドの未来をデザインする。</h1>
@@ -494,7 +496,6 @@
                 </div>
             </div>
         </div>
-
         <a href="#about" class="scroll-down">
             <i class="fas fa-chevron-down"></i>
         </a>
@@ -506,7 +507,7 @@
             <h2 class="section-title reveal">Who I am</h2>
             <div class="about-grid">
                 <div class="profile-wrapper reveal">
-                    <img src="my-profile.png" alt="楠井浩之 プロフィール" class="profile-img">
+                    <img src="my-profile.jpg" alt="楠井浩之 プロフィール" class="profile-img">
                 </div>
                 <div class="about-text reveal">
                     <h3>楠井 浩之 / Hiroyuki Kusui</h3>
@@ -536,7 +537,6 @@
                             <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
                         </div>
                     </div>
-                    <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-sub);">写実的なシネマティック映像から、プロモーション動画まで幅広く対応。</p>
                 </div>
 
                 <div class="skill-card reveal">
@@ -552,7 +552,6 @@
                             <div class="skill-bar"><div class="skill-progress" data-width="88%"></div></div>
                         </div>
                     </div>
-                    <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-sub);">AIによる自然なナレーション生成と、ブランドイメージに合わせたBGM制作。</p>
                 </div>
             </div>
         </div>
@@ -652,14 +651,13 @@
             const btn = contactForm.querySelector('button');
             const originalText = btn.innerText;
             
-            // 送信中の状態
             btn.innerText = "送信中...";
             btn.disabled = true;
 
             const formData = new FormData(contactForm);
 
             try {
-                // ここにFormspreeから発行されたEndpoint URLを貼り付けてください
+                // ここにFormspreeのURLを入れてください（例: https://formspree.io/f/xjggblyg）
                 const response = await fetch('https://formspree.io/f/xjggblyg', {
                     method: 'POST',
                     body: formData,
